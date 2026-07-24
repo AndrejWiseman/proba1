@@ -82,21 +82,17 @@ WSGI_APPLICATION = 'proba1.wsgi.application'
 # }
 
 
-
-tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': tmpPostgres.path.replace('/', ''),
-        'USER': tmpPostgres.username,
-        'PASSWORD': tmpPostgres.password,
-        'HOST': tmpPostgres.hostname,
-        'PORT': 5432,
-        'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
-    }
+  'default': {
+    'ENGINE': os.environ.get('db_engine', 'django.db.backends.postgresql'),
+    'NAME': os.environ.get('PGDATABASE'),
+    'USER': os.environ.get('PGUSER'),
+    'PASSWORD': os.environ.get('PGPASSWORD'),
+    'HOST': os.environ.get('PGHOST'),
+    'PORT': os.environ.get('db_port', '5432'),
+    'OPTIONS': {'sslmode': 'require'},
+  }
 }
-
 
 
 # Password validation
